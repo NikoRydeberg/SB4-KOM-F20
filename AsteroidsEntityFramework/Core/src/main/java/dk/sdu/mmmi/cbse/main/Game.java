@@ -10,6 +10,8 @@ import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
+import dk.sdu.mmmi.cbse.enemysystem.EnemyControlSystem;
+import dk.sdu.mmmi.cbse.enemysystem.EnemyPlugin;
 import dk.sdu.mmmi.cbse.managers.GameInputProcessor;
 import dk.sdu.mmmi.cbse.playersystem.PlayerControlSystem;
 import dk.sdu.mmmi.cbse.playersystem.PlayerPlugin;
@@ -48,6 +50,13 @@ public class Game
         IEntityProcessingService playerProcess = new PlayerControlSystem();
         entityPlugins.add(playerPlugin);
         entityProcessors.add(playerProcess);
+
+        IGamePluginService enemyPlugin = new EnemyPlugin();
+
+        IEntityProcessingService enemyProcess = new EnemyControlSystem();
+        entityPlugins.add(enemyPlugin);
+        entityProcessors.add(enemyProcess);
+
         // Lookup all Game Plugins using ServiceLoader
         for (IGamePluginService iGamePlugin : entityPlugins) {
             iGamePlugin.start(gameData, world);
@@ -87,12 +96,22 @@ public class Game
             float[] shapex = entity.getShapeX();
             float[] shapey = entity.getShapeY();
 
+            float[] enemyX = entity.getEnemyX();
+            float[] enemyY = entity.getEnemyY();
+
             for (int i = 0, j = shapex.length - 1;
                     i < shapex.length;
                     j = i++) {
 
                 sr.line(shapex[i], shapey[i], shapex[j], shapey[j]);
             }
+            for (int i = 0, j = enemyX.length - 1;
+                 i < enemyX.length;
+                 j = i++) {
+
+                sr.line(enemyX[i], enemyY[i], enemyX[j], enemyY[j]);
+            }
+            sr.line(enemyX[0], enemyY[0], enemyX[3], enemyY[3]);
 
             sr.end();
         }

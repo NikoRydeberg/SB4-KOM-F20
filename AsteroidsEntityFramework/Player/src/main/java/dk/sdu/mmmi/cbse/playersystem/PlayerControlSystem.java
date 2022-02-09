@@ -62,4 +62,20 @@ public class PlayerControlSystem implements IEntityProcessingService {
         entity.setShapeY(shapey);
     }
 
+    private void updateFlame(Entity entity){
+        float[] flamex = entity.getFlameX();
+        float[] flamey = entity.getFlameY();
+        PositionPart positionPart = entity.getPart(PositionPart.class);
+        float x = positionPart.getX();
+        float y = positionPart.getY();
+        float radians = positionPart.getRadians();
+
+        flamex[0] = (float) (x + Math.cos(radians) * 5);
+        flamey[0] = (float) (y + Math.sin(radians) * 5);
+
+
+
+
+    }
+
 }
